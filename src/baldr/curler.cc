@@ -2,6 +2,7 @@
 #include "midgard/logging.h"
 #include "midgard/util.h"
 
+#include <cstdio>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -111,6 +112,8 @@ struct curler_t::pimpl_t {
                   "Failed to set User-Agent ");
     // set the url
     assert_curl(curl_easy_setopt(connection.get(), CURLOPT_URL, url.c_str()), "Failed to set URL ");
+    assert_curl(curl_easy_setopt(connection.get(), CURLOPT_VERBOSE, 1L), "Failed to set verbose mode");
+    assert_curl(curl_easy_setopt(connection.get(), CURLOPT_STDERR, stdout), "Failed to set stderr");
     // set the location of the result
     std::vector<char> result;
     assert_curl(curl_easy_setopt(connection.get(), CURLOPT_WRITEDATA, &result),
